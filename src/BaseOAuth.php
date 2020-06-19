@@ -32,7 +32,7 @@ abstract class BaseOAuth
     private function checkState($storeState = null, $state = null)
     {
         if (empty($storeState) && empty($state)) {
-            return false;
+            return true;
         }
 
         if ($storeState != $state) {
