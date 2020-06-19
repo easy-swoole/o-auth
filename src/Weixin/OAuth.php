@@ -4,7 +4,7 @@
  */
 
 
-namespace EasySwoole\OAuth\Weixin;
+namespace EasySwoole\OAuth\WeiXin;
 
 
 use EasySwoole\HttpClient\HttpClient;

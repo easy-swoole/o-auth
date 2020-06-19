@@ -4,7 +4,7 @@
  */
 
 
-namespace EasySwoole\OAuth\Weixin;
+namespace EasySwoole\OAuth\WeiXin;
 
 
 class Config
