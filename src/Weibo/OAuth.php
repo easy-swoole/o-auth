@@ -35,9 +35,9 @@ class OAuth extends BaseOAuth
             'language' => $this->config->getLanguage()
         ]);
         if ($this->config->getDisplay() == 'mobile') {
-            return self::API_MOBILE_DOMAIN . '/oauth2/authorize?' . $params;
+            return $this->getUrl(self::API_MOBILE_DOMAIN . '/oauth2/authorize', $params);
         }
-        return self::API_DOMAIN . '/oauth2/authorize?' . $params;
+        return $this->getUrl(self::API_DOMAIN . '/oauth2/authorize', $params);
     }
 
     protected function __getAccessToken($state = null, $code = null)

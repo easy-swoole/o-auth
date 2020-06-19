@@ -18,13 +18,13 @@ class OAuth extends BaseOAuth
 
     public function getAuthUrl()
     {
-        $params = http_build_query([
+        $params = [
             'client_id' => $this->config->getClientId(),
             'redirect_uri' => $this->config->getRedirectUri(),
             'state' => $this->config->getState(),
             'response_type' => $this->config->getResponseType(),
-        ]);
-        return self::API_DOMAIN . '/oauth/authorize?' . $params;
+        ];
+        return $this->getUrl(self::API_DOMAIN . '/oauth/authorize', $params);
     }
 
     public function getUserInfo(string $accessToken)

@@ -18,6 +18,11 @@ abstract class BaseOAuth
 
     public abstract function getAuthUrl();
 
+    protected function getUrl($url, $params = [])
+    {
+        return $url . '?' . http_build_query($params);
+    }
+
     public function getAccessToken($storeState = null, $state = null, $code = null)
     {
 

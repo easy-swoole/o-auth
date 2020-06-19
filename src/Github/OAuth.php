@@ -22,15 +22,15 @@ class OAuth extends BaseOAuth
 
     public function getAuthUrl()
     {
-        $params = http_build_query([
+        $params = [
             'client_id' => $this->config->getClientId(),
             'redirect_uri' => $this->config->getRedirectUri(),
             'login' => $this->config->getLogin(),
             'scope' => $this->config->getScope(),
             'state' => $this->config->getState(),
             'allow_signup' => $this->config->getAllowSignUp(),
-        ]);
-        return self::AUTH_DOMAIN . '/login/oauth/authorize?' . $params;
+        ];
+        return $this->getUrl(self::AUTH_DOMAIN . '/login/oauth/authorize', $params);
     }
 
     protected function __getAccessToken($state = null, $code = null)
