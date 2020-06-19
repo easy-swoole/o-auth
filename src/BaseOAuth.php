@@ -1,0 +1,44 @@
+<?php
+/**
+ * @author gaobinzhan <gaobinzhan@gmail.com>
+ */
+
+namespace EasySwoole\OAuth;
+
+use EasySwoole\HttpClient\HttpClient;
+
+abstract class BaseOAuth
+{
+    protected $config;
+
+    public function __construct($config)
+    {
+        $this->config = $config;
+    }
+
+    public function getAccessToken($storeState = null, $state = null, $code = null)
+    {
+
+        if (!$this->checkState($storeState, $state)) {
+            throw new \InvalidArgumentException('state 验证失败');
+        }
+
+        return $this->__getAccessToken($state, $code);
+
+    }
+
+    protected function checkState($storeState = null, $state = null)
+    {
+        if (empty($storeState) && empty($state)) {
+            return false;
+        }
+
+        if ($storeState != $state) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected abstract function __getAccessToken($state = null, $code = null);
+}
