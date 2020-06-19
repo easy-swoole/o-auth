@@ -43,10 +43,6 @@ class OAuth extends BaseOAuth
             'state' => $state,
         ]);
 
-        if ($client->getStatusCode() !== 200) {
-            throw new OAuthException($client->getErrCode() . ' : ' . $client->getErrMsg());
-        }
-
         $body = $client->getBody();
 
         if (!$body) throw new OAuthException('获取AccessToken失败！');
@@ -67,17 +63,11 @@ class OAuth extends BaseOAuth
             ->setHeader('Authorization', ' token ' . $accessToken)
             ->get();
 
-
-        if ($client->getStatusCode() !== 200) {
-            throw new OAuthException($client->getErrCode() . ' : ' . $client->getErrMsg());
-        }
-
         $body = $client->getBody();
 
         if (!$body) {
             throw new OAuthException('获取用户信息失败！');
         }
-
 
         $result = \json_decode($body, true);
 

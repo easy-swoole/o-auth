@@ -16,6 +16,8 @@ abstract class BaseOAuth
         $this->config = $config;
     }
 
+    public abstract function getAuthUrl();
+
     public function getAccessToken($storeState = null, $state = null, $code = null)
     {
 
@@ -27,7 +29,7 @@ abstract class BaseOAuth
 
     }
 
-    protected function checkState($storeState = null, $state = null)
+    private function checkState($storeState = null, $state = null)
     {
         if (empty($storeState) && empty($state)) {
             return false;
@@ -41,4 +43,6 @@ abstract class BaseOAuth
     }
 
     protected abstract function __getAccessToken($state = null, $code = null);
+
+    public abstract function getUserInfo(string $accessToken);
 }

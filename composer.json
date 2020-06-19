@@ -1,5 +1,5 @@
 {
-  "name": "easyswoole/oauth",
+  "name": "easyswoole/o-auth",
   "type": "library",
   "description": "easyswoole component",
   "keywords" : ["swoole", "framework", "async","easyswoole"],
