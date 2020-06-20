@@ -43,6 +43,21 @@ abstract class BaseOAuth
         return true;
     }
 
+    protected function jsonp_decode(string $jsonp, $assoc = true)
+    {
+        $jsonp = trim($jsonp);
+        if (isset($jsonp[0]) && $jsonp[0] !== '[' && $jsonp[0] !== '{') {
+            $begin = strpos($jsonp, '(');
+            if (false !== $begin) {
+                $end = strrpos($jsonp, ')');
+                if (false !== $end) {
+                    $jsonp = substr($jsonp, $begin + 1, $end - $begin - 1);
+                }
+            }
+        }
+        return json_decode($jsonp, $assoc);
+    }
+
     public abstract function getAuthUrl();
 
     protected abstract function __getAccessToken($state = null, $code = null);
