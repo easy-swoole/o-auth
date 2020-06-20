@@ -66,4 +66,19 @@ class OAuth extends BaseOAuth
 
         return $result['access_token'];
     }
+
+    public function validateAccessToken(string $accessToken)
+    {
+        try {
+            $this->getUserInfo($accessToken);
+            return true;
+        } catch (OAuthException $exception) {
+            return false;
+        }
+    }
+
+    public function refreshToken(string $refreshToken = null)
+    {
+        return false;
+    }
 }

@@ -5,8 +5,6 @@
 
 namespace EasySwoole\OAuth;
 
-use EasySwoole\HttpClient\HttpClient;
-
 abstract class BaseOAuth
 {
     protected $config;
@@ -25,7 +23,7 @@ abstract class BaseOAuth
     {
 
         if (!$this->checkState($storeState, $state)) {
-            throw new \InvalidArgumentException('state 验证失败');
+            throw new \OAuthException('state 验证失败');
         }
 
         return $this->__getAccessToken($state, $code);
@@ -50,4 +48,8 @@ abstract class BaseOAuth
     protected abstract function __getAccessToken($state = null, $code = null);
 
     public abstract function getUserInfo(string $accessToken);
+
+    public abstract function refreshToken(string $refreshToken = null);
+
+    public abstract function validateAccessToken(string $accessToken);
 }
