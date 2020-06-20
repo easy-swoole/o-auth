@@ -21,6 +21,10 @@ class Config extends BaseConfig
 
     protected $grantType = 'authorization_code';
 
+    protected $appPrivateKeyFile = '';
+
+    protected $appPrivateKey = '';
+
     /**
      * @return string
      */
@@ -99,6 +103,38 @@ class Config extends BaseConfig
     public function setGrantType(string $grantType): void
     {
         $this->grantType = $grantType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppPrivateKeyFile(): string
+    {
+        return $this->appPrivateKeyFile;
+    }
+
+    /**
+     * @param string $appPrivateKeyFile
+     */
+    public function setAppPrivateKeyFile(string $appPrivateKeyFile): void
+    {
+        $this->appPrivateKeyFile = $appPrivateKeyFile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppPrivateKey(): string
+    {
+        return $this->appPrivateKey;
+    }
+
+    /**
+     * @param string $appPrivateKey
+     */
+    public function setAppPrivateKey(string $appPrivateKey): void
+    {
+        $this->appPrivateKey = $appPrivateKey;
     }
 
 }
