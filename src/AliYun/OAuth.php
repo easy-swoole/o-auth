@@ -142,6 +142,15 @@ class OAuth extends BaseOAuth
         return trim($content, '&');
     }
 
+    public function refreshToken(string $refreshToken = null)
+    {
+        // TODO: Implement refreshToken() method.
+    }
+
+    public function validateAccessToken(string $accessToken)
+    {
+        // TODO: Implement validateAccessToken() method.
+    }
 
     private function rsaSign($content, $privateKey, $signType = OPENSSL_ALGO_SHA256)
     {
