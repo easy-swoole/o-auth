@@ -65,9 +65,7 @@ class OAuth extends BaseOAuth
 
         $body = $client->getBody();
 
-        if (!$body) {
-            throw new OAuthException('获取用户信息失败！');
-        }
+        if (!$body) throw new OAuthException('获取用户信息失败！');
 
         $result = \json_decode($body, true);
 
