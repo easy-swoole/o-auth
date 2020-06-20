@@ -7,19 +7,17 @@
 namespace EasySwoole\OAuth\Github;
 
 
-class Config
+use EasySwoole\OAuth\BaseConfig;
+
+class Config extends BaseConfig
 {
     protected $clientId = '';
 
     protected $clientSecret = '';
 
-    protected $redirectUri = '';
-
     protected $login = '';
 
     protected $scope = '';
-
-    protected $state = '';
 
     protected $allowSignUp = true;
 
@@ -54,22 +52,6 @@ class Config
     public function setClientSecret(string $clientSecret): void
     {
         $this->clientSecret = $clientSecret;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRedirectUri(): string
-    {
-        return $this->redirectUri;
-    }
-
-    /**
-     * @param string $redirectUri
-     */
-    public function setRedirectUri(string $redirectUri): void
-    {
-        $this->redirectUri = $redirectUri;
     }
 
     /**

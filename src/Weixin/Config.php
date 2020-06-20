@@ -7,19 +7,17 @@
 namespace EasySwoole\OAuth\WeiXin;
 
 
-class Config
+use EasySwoole\OAuth\BaseConfig;
+
+class Config extends BaseConfig
 {
     protected $appId = '';
 
     protected $secret = '';
 
-    protected $redirectUri = '';
-
     protected $responseType = 'code';
 
     protected $scope = 'snsapi_login';
-
-    protected $state = '';
 
     protected $grantType = 'authorization_code';
 
@@ -76,22 +74,6 @@ class Config
     /**
      * @return string
      */
-    public function getRedirectUri(): string
-    {
-        return $this->redirectUri;
-    }
-
-    /**
-     * @param string $redirectUri
-     */
-    public function setRedirectUri(string $redirectUri): void
-    {
-        $this->redirectUri = $redirectUri;
-    }
-
-    /**
-     * @return string
-     */
     public function getResponseType(): string
     {
         return $this->responseType;
@@ -119,22 +101,6 @@ class Config
     public function setScope(string $scope): void
     {
         $this->scope = $scope;
-    }
-
-    /**
-     * @return string
-     */
-    public function getState(): string
-    {
-        return $this->state;
-    }
-
-    /**
-     * @param string $state
-     */
-    public function setState(string $state): void
-    {
-        $this->state = $state;
     }
 
     /**

@@ -7,17 +7,15 @@
 namespace EasySwoole\OAuth\Weibo;
 
 
-class Config
+use EasySwoole\OAuth\BaseConfig;
+
+class Config extends BaseConfig
 {
     protected $clientId = '';
 
     protected $clientSecret = '';
 
-    protected $redirectUri = '';
-
     protected $scope = '';
-
-    protected $state = '';
 
     protected $display = 'default';
 
@@ -62,22 +60,6 @@ class Config
     /**
      * @return string
      */
-    public function getRedirectUri(): string
-    {
-        return $this->redirectUri;
-    }
-
-    /**
-     * @param string $redirectUri
-     */
-    public function setRedirectUri(string $redirectUri): void
-    {
-        $this->redirectUri = $redirectUri;
-    }
-
-    /**
-     * @return string
-     */
     public function getScope(): string
     {
         return $this->scope;
@@ -89,22 +71,6 @@ class Config
     public function setScope(string $scope): void
     {
         $this->scope = $scope;
-    }
-
-    /**
-     * @return string
-     */
-    public function getState(): string
-    {
-        return $this->state;
-    }
-
-    /**
-     * @param string $state
-     */
-    public function setState(string $state): void
-    {
-        $this->state = $state;
     }
 
     /**
