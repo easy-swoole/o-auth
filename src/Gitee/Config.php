@@ -7,15 +7,13 @@
 namespace EasySwoole\OAuth\Gitee;
 
 
-class Config
+use EasySwoole\OAuth\BaseConfig;
+
+class Config extends BaseConfig
 {
     protected $clientId = '';
 
     protected $clientSecret = '';
-
-    protected $redirectUri = '';
-
-    protected $state = '';
 
     protected $responseType = 'code';
 
@@ -67,38 +65,6 @@ class Config
     public function setClientSecret(string $clientSecret): void
     {
         $this->clientSecret = $clientSecret;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRedirectUri(): string
-    {
-        return $this->redirectUri;
-    }
-
-    /**
-     * @param string $redirectUri
-     */
-    public function setRedirectUri(string $redirectUri): void
-    {
-        $this->redirectUri = $redirectUri;
-    }
-
-    /**
-     * @return string
-     */
-    public function getState(): string
-    {
-        return $this->state;
-    }
-
-    /**
-     * @param string $state
-     */
-    public function setState(string $state): void
-    {
-        $this->state = $state;
     }
 
     /**

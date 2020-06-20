@@ -65,9 +65,7 @@ class OAuth extends BaseOAuth
 
         $body = $client->getBody();
 
-        if (!$body) {
-            throw new OAuthException('获取用户信息失败！');
-        }
+        if (!$body) throw new OAuthException('获取用户信息失败！');
 
         $result = \json_decode($body, true);
 
@@ -76,5 +74,20 @@ class OAuth extends BaseOAuth
         }
 
         return $result;
+    }
+
+    public function validateAccessToken(string $accessToken)
+    {
+        try {
+            $this->getUserInfo($accessToken);
+            return true;
+        } catch (OAuthException $exception) {
+            return false;
+        }
+    }
+
+    public function refreshToken(string $refreshToken = null)
+    {
+        return false;
     }
 }

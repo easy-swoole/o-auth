@@ -87,4 +87,14 @@ class OAuth extends BaseOAuth
 
         return $result;
     }
+
+    public function refreshToken(string $refreshToken = null)
+    {
+        // TODO: Implement refreshToken() method.
+    }
+
+    public function validateAccessToken(string $accessToken)
+    {
+        // TODO: Implement validateAccessToken() method.
+    }
 }

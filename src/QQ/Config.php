@@ -4,57 +4,55 @@
  */
 
 
-namespace EasySwoole\OAuth\Weibo;
+namespace EasySwoole\OAuth\QQ;
 
 
 use EasySwoole\OAuth\BaseConfig;
 
 class Config extends BaseConfig
 {
-    protected $clientId = '';
+    protected $appId = '';
 
-    protected $clientSecret = '';
+    protected $appKey = '';
+
+    protected $responseType = 'code';
 
     protected $scope = '';
 
-    protected $display = 'default';
-
-    protected $forceLogin = false;
-
-    protected $language = '';
+    protected $display = '';
 
     protected $grantType = 'authorization_code';
 
     /**
      * @return string
      */
-    public function getClientId(): string
+    public function getAppId()
     {
-        return $this->clientId;
+        return $this->appId;
     }
 
     /**
-     * @param string $clientId
+     * @param string $appId
      */
-    public function setClientId(string $clientId): void
+    public function setAppId(string $appId): void
     {
-        $this->clientId = $clientId;
+        $this->appId = $appId;
     }
 
     /**
      * @return string
      */
-    public function getClientSecret(): string
+    public function getResponseType(): string
     {
-        return $this->clientSecret;
+        return $this->responseType;
     }
 
     /**
-     * @param string $clientSecret
+     * @param string $responseType
      */
-    public function setClientSecret(string $clientSecret): void
+    public function setResponseType(string $responseType): void
     {
-        $this->clientSecret = $clientSecret;
+        $this->responseType = $responseType;
     }
 
     /**
@@ -90,35 +88,19 @@ class Config extends BaseConfig
     }
 
     /**
-     * @return bool
-     */
-    public function getForceLogin(): bool
-    {
-        return $this->forceLogin;
-    }
-
-    /**
-     * @param bool $forceLogin
-     */
-    public function setForceLogin(bool $forceLogin): void
-    {
-        $this->forceLogin = $forceLogin;
-    }
-
-    /**
      * @return string
      */
-    public function getLanguage(): string
+    public function getAppKey(): string
     {
-        return $this->language;
+        return $this->appKey;
     }
 
     /**
-     * @param string $language
+     * @param string $appKey
      */
-    public function setLanguage(string $language): void
+    public function setAppKey(string $appKey): void
     {
-        $this->language = $language;
+        $this->appKey = $appKey;
     }
 
     /**
@@ -136,4 +118,5 @@ class Config extends BaseConfig
     {
         $this->grantType = $grantType;
     }
+
 }
