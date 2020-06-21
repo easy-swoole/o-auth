@@ -25,7 +25,7 @@ class OAuth extends BaseOAuth
 
     public function getAuthUrl()
     {
-        $params = http_build_query([
+        $params = [
             'client_id' => $this->config->getClientId(),
             'redirect_uri' => $this->config->getRedirectUri(),
             'display' => $this->config->getDisplay(),
@@ -33,7 +33,7 @@ class OAuth extends BaseOAuth
             'state' => $this->config->getState(),
             'forcelogin' => $this->config->getForceLogin(),
             'language' => $this->config->getLanguage()
-        ]);
+        ];
         if ($this->config->getDisplay() == 'mobile') {
             return $this->getUrl(self::API_MOBILE_DOMAIN . '/oauth2/authorize', $params);
         }
@@ -47,7 +47,7 @@ class OAuth extends BaseOAuth
                 'client_id' => $this->config->getClientId(),
                 'redirect_uri' => $this->config->getRedirectUri(),
                 'client_secret' => $this->config->getClientSecret(),
-                'grant_type' => $this->config->getGrantType(),
+                'grant_type' => 'authorization_code',
                 'code' => $code,
             ]);
 
@@ -57,6 +57,7 @@ class OAuth extends BaseOAuth
         if (!$body) throw new OAuthException('获取AccessToken失败！');
 
         $result = \json_decode($body, true);
+        $this->accessTokenResult = $result;
 
         if (isset($result['error'])) {
             throw new OAuthException($result['error']);
@@ -90,11 +91,33 @@ class OAuth extends BaseOAuth
 
     public function refreshToken(string $refreshToken = null)
     {
-        // TODO: Implement refreshToken() method.
+        return false;
     }
 
     public function validateAccessToken(string $accessToken)
     {
-        // TODO: Implement validateAccessToken() method.
+        $params = [
+            'access_token' => $accessToken
+        ];
+
+        $client = (new HttpClient(self::API_DOMAIN . '/oauth2/get_token_info'))
+            ->post($params);
+
+        $body = $client->getBody();
+        if (!$body) return false;
+
+        if (isset($this->result['error_code'])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param mixed $uid
+     */
+    public function setUid($uid): void
+    {
+        $this->uid = $uid;
     }
 }

@@ -9,6 +9,10 @@ abstract class BaseOAuth
 {
     protected $config;
 
+    protected $accessTokenResult = [];
+
+    protected $refreshTokenResult = [];
+
     public function __construct(BaseConfig $config)
     {
         $this->config = $config;
@@ -23,7 +27,7 @@ abstract class BaseOAuth
     {
 
         if (!$this->checkState($storeState, $state)) {
-            throw new \OAuthException('state 验证失败');
+            throw new OAuthException('state 验证失败');
         }
 
         return $this->__getAccessToken($state, $code);
@@ -56,6 +60,22 @@ abstract class BaseOAuth
             }
         }
         return json_decode($jsonp, $assoc);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAccessTokenResult(): array
+    {
+        return $this->accessTokenResult;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRefreshTokenResult(): array
+    {
+        return $this->refreshTokenResult;
     }
 
     public abstract function getAuthUrl();
