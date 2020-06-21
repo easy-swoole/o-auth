@@ -18,10 +18,5 @@
     "psr-4": {
       "EasySwoole\\OAuth\\": "src/"
     }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "EasySwoole\\OAuth\\Test\\":"test/"
-    }
   }
 }
