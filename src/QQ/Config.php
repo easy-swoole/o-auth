@@ -11,6 +11,10 @@ use EasySwoole\OAuth\BaseConfig;
 
 class Config extends BaseConfig
 {
+    const OPEN_ID = 1;
+
+    const UNION_ID = 2;
+
     protected $appId = '';
 
     protected $appKey = '';
@@ -21,7 +25,7 @@ class Config extends BaseConfig
 
     protected $display = '';
 
-    protected $grantType = 'authorization_code';
+    protected $openIdMode = self::OPEN_ID;
 
     /**
      * @return string
@@ -104,19 +108,19 @@ class Config extends BaseConfig
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getGrantType(): string
+    public function getOpenIdMode(): int
     {
-        return $this->grantType;
+        return $this->openIdMode;
     }
 
     /**
-     * @param string $grantType
+     * @param int $openIdMode
      */
-    public function setGrantType(string $grantType): void
+    public function setOpenIdMode(int $openIdMode): void
     {
-        $this->grantType = $grantType;
+        $this->openIdMode = $openIdMode;
     }
 
 }

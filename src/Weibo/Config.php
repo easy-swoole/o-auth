@@ -23,8 +23,6 @@ class Config extends BaseConfig
 
     protected $language = '';
 
-    protected $grantType = 'authorization_code';
-
     /**
      * @return string
      */
@@ -119,21 +117,5 @@ class Config extends BaseConfig
     public function setLanguage(string $language): void
     {
         $this->language = $language;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGrantType(): string
-    {
-        return $this->grantType;
-    }
-
-    /**
-     * @param string $grantType
-     */
-    public function setGrantType(string $grantType): void
-    {
-        $this->grantType = $grantType;
     }
 }

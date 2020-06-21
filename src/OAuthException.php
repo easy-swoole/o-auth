@@ -5,6 +5,7 @@
 
 namespace EasySwoole\OAuth;
 
-class OAuthException extends \Exception{
+class OAuthException extends \Exception
+{
 
 }
