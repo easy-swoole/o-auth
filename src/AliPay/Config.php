@@ -4,7 +4,7 @@
  */
 
 
-namespace EasySwoole\OAuth\AliYun;
+namespace EasySwoole\OAuth\AliPay;
 
 
 use EasySwoole\OAuth\BaseConfig;
