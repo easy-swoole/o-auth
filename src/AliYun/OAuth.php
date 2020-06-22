@@ -180,7 +180,8 @@ class OAuth extends BaseOAuth
         }
 
         $this->openid = $responseData['user_id'];
-        return $responseData['access_token'];
+
+        return true;
     }
 
     public function validateAccessToken(string $accessToken)
