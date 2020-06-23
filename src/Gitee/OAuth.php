@@ -48,7 +48,7 @@ class OAuth extends BaseOAuth
     {
         $client = (new HttpClient(self::API_DOMAIN . '/oauth/token'))
             ->post([
-                'grant_type' => $this->config->getGrantType(),
+                'grant_type' => 'authorization_code',
                 'code' => $code,
                 'client_id' => $this->config->getClientId(),
                 'redirect_uri' => $this->config->getRedirectUri(),
@@ -59,6 +59,7 @@ class OAuth extends BaseOAuth
         if (!$body) throw new OAuthException('获取AccessToken失败！');
 
         $result = \json_decode($body, true);
+        $this->accessTokenResult = $result;
 
         if (isset($result['error'])) {
             throw new OAuthException($result['error_description']);

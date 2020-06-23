@@ -4,7 +4,7 @@
  */
 
 
-namespace EasySwoole\OAuth\AliYun;
+namespace EasySwoole\OAuth\AliPay;
 
 
 use EasySwoole\OAuth\BaseConfig;
@@ -18,8 +18,6 @@ class Config extends BaseConfig
     protected $signType = 'RSA2';
 
     protected $charset = 'utf-8';
-
-    protected $grantType = 'authorization_code';
 
     protected $appPrivateKeyFile = '';
 
@@ -87,22 +85,6 @@ class Config extends BaseConfig
     public function setCharset(string $charset): void
     {
         $this->charset = $charset;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGrantType(): string
-    {
-        return $this->grantType;
-    }
-
-    /**
-     * @param string $grantType
-     */
-    public function setGrantType(string $grantType): void
-    {
-        $this->grantType = $grantType;
     }
 
     /**

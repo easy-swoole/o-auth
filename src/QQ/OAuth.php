@@ -37,7 +37,7 @@ class OAuth extends BaseOAuth
     protected function __getAccessToken($state = null, $code = null)
     {
         $params = [
-            'grant_type' => $this->config->getGrantType(),
+            'grant_type' => 'authorization_code',
             'client_id' => $this->config->getAppId(),
             'client_secret' => $this->config->getAppKey(),
             'code' => $code,
@@ -58,6 +58,8 @@ class OAuth extends BaseOAuth
         }
 
         parse_str($body, $result);
+        $this->accessTokenResult = $result;
+
         if (isset($result['code']) && 0 != $result['code']) {
             throw new OAuthException($result['msg'], $result['code']);
         }
@@ -67,12 +69,39 @@ class OAuth extends BaseOAuth
 
     public function validateAccessToken(string $accessToken)
     {
-        // TODO: Implement validateAccessToken() method.
+        try {
+            $this->getOpenId($accessToken);
+            return true;
+        } catch (OAuthException $exception) {
+            return false;
+        }
     }
 
     public function refreshToken(string $refreshToken = null)
     {
-        // TODO: Implement refreshToken() method.
+        $params = [
+            'grant_type' => 'refresh_token',
+            'client_id' => $this->config->getAppId(),
+            'client_secret' => $this->config->getAppKey(),
+            'refresh_token' => $refreshToken
+        ];
+
+        $client = (new HttpClient(self::API_DOMAIN . '/oauth2.0/token'))
+            ->setQuery($params)
+            ->get();
+
+        $body = $client->getBody();
+        if (!$body) return false;
+
+        $responseData = $this->jsonp_decode($body, true);
+        if ($responseData) {
+            return false;
+        }
+
+        parse_str($body, $result);
+        $this->refreshTokenResult = $result;
+
+        return !isset($result['code']);
     }
 
     public function getUserInfo(string $accessToken)
@@ -109,6 +138,10 @@ class OAuth extends BaseOAuth
             'access_token' => $accessToken
         ];
 
+        if ($this->config::UNION_ID == $this->config->getOpenIdMode()) {
+            $params['unionid'] = $this->config->getOpenIdMode();
+        }
+
         $client = (new HttpClient(self::API_DOMAIN . '/oauth2.0/me'))
             ->setQuery($params)
             ->get();
@@ -124,7 +157,21 @@ class OAuth extends BaseOAuth
             throw new OAuthException($result['error_description'], $result['error']);
         }
 
-        return $this->openId = $result['openid'];
+        $this->openId = $result['openid'];
+
+        if ($this->config::UNION_ID == $this->config->getOpenIdMode()) {
+            return $result['unionid'];
+        }
+
+        return $this->openId;
+    }
+
+    /**
+     * @param mixed $openId
+     */
+    public function setOpenId($openId): void
+    {
+        $this->openId = $openId;
     }
 
 }

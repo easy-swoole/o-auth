@@ -41,19 +41,32 @@ class OAuth extends BaseOAuth
                 'appid' => $this->config->getAppId(),
                 'secret' => $this->config->getSecret(),
                 'code' => $code,
-                'grant_type' => $this->config->getGrantType(),
+                'grant_type' => 'authorization_code',
             ])->get();
 
         $body = $client->getBody();
         if (!$body) throw new OAuthException('获取AccessToken失败！');
 
         $result = \json_decode($body, true);
+        $this->accessTokenResult = $result;
 
         if (isset($result['errcode']) && 0 != $result['errcode']) {
             throw new OAuthException($result['errmsg'], $result['errcode']);
         }
 
         $this->openId = $result['openid'];
+
+        switch ($this->config->getOpenIdMode()) {
+            case $this->config::OPEN_ID:
+                $this->openId = $result['openid'];
+                break;
+            case $this->config::UNION_ID:
+                $this->openId = $result['unionid'];
+                break;
+            default:
+                throw new OAuthException('openid mode 设置有误！');
+        }
+
         return $result['access_token'];
     }
 
@@ -81,11 +94,46 @@ class OAuth extends BaseOAuth
 
     public function refreshToken(string $refreshToken = null)
     {
-        // TODO: Implement refreshToken() method.
+        $params = [
+            'appid' => $this->config->getAppId(),
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $refreshToken
+        ];
+        $client = (new HttpClient(self::API_DOMAIN . '/sns/oauth2/refresh_token'))
+            ->setQuery($params)
+            ->get();
+
+        $body = $client->getBody();
+        if (!$body) return false;
+
+        $result = \json_decode($body, true);
+        $this->refreshTokenResult = $result;
+
+        return !isset($result['errcode']);
     }
 
     public function validateAccessToken(string $accessToken)
     {
-        // TODO: Implement validateAccessToken() method.
+        $params = [
+            'access_token' => $accessToken,
+            'openid' => $this->openId
+        ];
+        $client = (new HttpClient(self::API_DOMAIN . '/sns/auth'))
+            ->setQuery($params)
+            ->get();
+
+        $body = $client->getBody();
+        if (!$body) return false;
+
+        $result = \json_decode($body, true);
+        return isset($result['errcode']) && 0 == $result['errcode'];
+    }
+
+    /**
+     * @param mixed $openId
+     */
+    public function setOpenId($openId): void
+    {
+        $this->openId = $openId;
     }
 }

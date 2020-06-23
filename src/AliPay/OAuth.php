@@ -4,7 +4,7 @@
  */
 
 
-namespace EasySwoole\OAuth\AliYun;
+namespace EasySwoole\OAuth\AliPay;
 
 
 use EasySwoole\HttpClient\HttpClient;
@@ -15,8 +15,8 @@ use Swoole\Coroutine\System;
 class OAuth extends BaseOAuth
 {
 
-    const API_DOMAIN = 'https://openapi.alipay.com';
-    const AUTH_DOMAIN = 'https://openauth.alipay.com';
+    const API_DOMAIN = 'https://openapi.alipaydev.com';
+    const AUTH_DOMAIN = 'https://openauth.alipaydev.com';
 
     /** @var Config */
     protected $config;
@@ -43,7 +43,7 @@ class OAuth extends BaseOAuth
             'sign_type' => $this->config->getSignType(),
             'timestamp' => date('Y-m-d H:i:s'),
             'version' => '1.0',
-            'grant_type' => $this->config->getGrantType(),
+            'grant_type' => 'authorization_code',
             'code' => $code
         ];
         $params['sign'] = $this->sign($params);
@@ -56,15 +56,19 @@ class OAuth extends BaseOAuth
         if (!$body) throw new OAuthException('获取AccessToken失败！');
 
         $result = \json_decode($body, true);
+        $this->accessTokenResult = $result;
 
         if (!isset($result['alipay_system_oauth_token_response']) && isset($result['error_response'])) {
             throw new OAuthException(sprintf('%s %s', $result['error_response']['msg'], $result['error_response']['sub_msg']), $result['error_response']['code']);
         }
+
         $responseData = $result['alipay_system_oauth_token_response'];
         if (isset($responseData['code'])) {
             throw new OAuthException(sprintf('%s %s', $responseData['msg'], $responseData['sub_msg']), $responseData['code']);
         }
+
         $this->openid = $responseData['user_id'];
+
         return $responseData['access_token'];
     }
 
@@ -89,7 +93,7 @@ class OAuth extends BaseOAuth
         if (!$body) throw new OAuthException('获取用户信息失败！');
 
         $result = \json_decode($body, true);
-        
+
         if (!isset($result['alipay_user_info_share_response']) && isset($result['error_response'])) {
             throw new OAuthException(sprintf('%s %s', $result['error_response']['msg'], $result['error_response']['sub_msg']), $result['error_response']['code']);
         }
@@ -144,12 +148,50 @@ class OAuth extends BaseOAuth
 
     public function refreshToken(string $refreshToken = null)
     {
-        // TODO: Implement refreshToken() method.
+        $params = [
+            'app_id' => $this->config->getAppId(),
+            'method' => 'alipay.system.oauth.token',
+            'charset' => $this->config->getCharset(),
+            'sign_type' => $this->config->getSignType(),
+            'timestamp' => date('Y-m-d H:i:s'),
+            'version' => '1.0',
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $refreshToken,
+        ];
+
+        $params['sign'] = $this->sign($params);
+        $client = (new HttpClient(self::API_DOMAIN . '/gateway.do'))
+            ->setQuery($params)
+            ->get();
+
+        $body = $client->getBody();
+
+        if (!$body) return false;
+        $result = \json_decode($body, true);
+        $this->refreshTokenResult = $result;
+
+        if (!isset($result['alipay_system_oauth_token_response']) && isset($result['error_response'])) {
+            throw new OAuthException(sprintf('%s %s', $result['error_response']['msg'], $result['error_response']['sub_msg']), $result['error_response']['code']);
+        }
+
+        $responseData = $result['alipay_system_oauth_token_response'];
+        if (isset($responseData['code'])) {
+            throw new OAuthException(sprintf('%s %s', $responseData['msg'], $responseData['sub_msg']), $responseData['code']);
+        }
+
+        $this->openid = $responseData['user_id'];
+
+        return true;
     }
 
     public function validateAccessToken(string $accessToken)
     {
-        // TODO: Implement validateAccessToken() method.
+        try {
+            $this->getUserInfo($accessToken);
+            return true;
+        } catch (OAuthException $exception) {
+            return false;
+        }
     }
 
     private function rsaSign($content, $privateKey, $signType = OPENSSL_ALGO_SHA256)
@@ -176,5 +218,13 @@ class OAuth extends BaseOAuth
 
         $sign = base64_encode($sign);
         return $sign;
+    }
+
+    /**
+     * @param mixed $openid
+     */
+    public function setOpenid($openid): void
+    {
+        $this->openid = $openid;
     }
 }

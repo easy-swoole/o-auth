@@ -48,10 +48,12 @@ class OAuth extends BaseOAuth
         if (!$body) throw new OAuthException('获取AccessToken失败！');
 
         parse_str($body, $result);
+        $this->accessTokenResult = $result;
 
         if (isset($result['error'])) {
             throw new OAuthException($result['error']);
         }
+
 
         return $result['access_token'];
     }

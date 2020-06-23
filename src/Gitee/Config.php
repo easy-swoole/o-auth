@@ -17,24 +17,6 @@ class Config extends BaseConfig
 
     protected $responseType = 'code';
 
-    protected $grantType = 'authorization_code';
-
-    /**
-     * @return string
-     */
-    public function getGrantType(): string
-    {
-        return $this->grantType;
-    }
-
-    /**
-     * @param string $grantType
-     */
-    public function setGrantType(string $grantType): void
-    {
-        $this->grantType = $grantType;
-    }
-
     /**
      * @return string
      */
