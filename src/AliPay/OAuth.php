@@ -15,8 +15,8 @@ use Swoole\Coroutine\System;
 class OAuth extends BaseOAuth
 {
 
-    const API_DOMAIN = 'https://openapi.alipaydev.com';
-    const AUTH_DOMAIN = 'https://openauth.alipaydev.com';
+    const API_DOMAIN = 'https://openapi.alipay.com';
+    const AUTH_DOMAIN = 'https://openauth.alipay.com';
 
     /** @var Config */
     protected $config;
